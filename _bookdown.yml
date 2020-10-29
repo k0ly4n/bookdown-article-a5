@@ -1,0 +1,8 @@
+book_filename: "article"
+
+language:
+  label:
+    fig: 'Рис. '
+    tab: 'Таблица '
+
+delete_merged_file: yes

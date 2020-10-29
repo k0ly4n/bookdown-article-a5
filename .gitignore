@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+_book
+article-tikzDictionary
+article.html
+article.log
+article.Rmd
+article.knit.md
+article.utf8.md
+.~*#
