@@ -6,7 +6,7 @@ site: bookdown::bookdown_site
 output:
   bookdown::word_document2:
     reference_docx: styles-a5.docx
-    pandoc_args: --lua-filter=filter.lua
+    pandoc_args: ["--lua-filter=filter.lua", "--lua-filter=filter-table.lua"]
     toc: no
   bookdown::html_document2: default
 bibliography: article.bib
