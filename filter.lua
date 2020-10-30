@@ -1,8 +1,5 @@
 -- Файл с Lua-фильтрами для Pandoc. Будет использоваться для docx- и odt-файлов.
 -- Автор: Стрелков Н.О., <StrelkovNO@mpei.ru>
---
--- Примечания
---   20201030 - скрипт работает правильно с pandoc 2.7.3, поставляемым вместе с RStudio 1.3.1093
 
 local docx_image_caption_separator = "."; -- символ разделителя между номером рисунка и его названием в docx
 local docx_table_caption_separator = ""; -- символ разделителя между номером таблицы и ее названием в docx
@@ -63,26 +60,30 @@ end
 
 --[[
 Функция для изменения оформления таблицы:
-1. удаление символа двоеточия (обход исправления бага https://github.com/rstudio/bookdown/issues/618) или его замена на docx_table_caption_separator
+1. удаление символа двоеточия (обход исправления бага https://github.com/rstudio/bookdown/issues/618) или его замена на docx_table_caption_separator / odt_table_caption_separator
 2. добавление пустой строки текста после таблицы.
 ]]--
 function Table(tab)
-  -- docx
-  if (FORMAT=="docx") then
-    if #tab.caption >= 3 then
-      tab.caption[3].text = string.gsub(tab.caption[3].text, ':', docx_table_caption_separator);
-    end
-    return {
-      tab,
-      pandoc.Para{ pandoc.Str '' }
-      };
-  end
+  -- docx or odt
+  if (FORMAT=="docx" or FORMAT=="odt") then
+		if FORMAT=="docx" then
+			table_caption_separator = docx_table_caption_separator;
+		else
+			table_caption_separator = odt_table_caption_separator;
+		end
 
-  -- odt
-  if (FORMAT=="odt") then
-    if #tab.caption >= 3 then
-      tab.caption[3].text = string.gsub(tab.caption[3].text, ':', odt_table_caption_separator);
-    end
+	  if PANDOC_VERSION < { 2, 10 } then
+		  if #tab.caption >= 3 then
+		    tab.caption[3].text = string.gsub(tab.caption[3].text, ':', table_caption_separator);
+		  end
+		else
+			if #tab.caption.long >= 1 then
+				if #tab.caption.long[1].content >= 3 then
+					tab.caption.long[1].content[3].text = string.gsub(tab.caption.long[1].content[3].text, ':', table_caption_separator);
+				end
+			end
+		end
+
     return {
       tab,
       pandoc.Para{ pandoc.Str '' }
