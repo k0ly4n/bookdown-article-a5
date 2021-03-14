@@ -27,7 +27,7 @@ local table_cell_body_style = "TableCellBody"; -- стиль остальных 
 
         local function get_aligns(el)
             local aligns = {}
-            if PANDOC_VERSION < { 2, 10 } then
+            if (PANDOC_VERSION[1] >= 2) and (PANDOC_VERSION[2] < 10) then
                 aligns = el.aligns
             else
                 for _, v in ipairs(el.colspecs) do
@@ -39,7 +39,7 @@ local table_cell_body_style = "TableCellBody"; -- стиль остальных 
 
         local function get_headers(el)
             local headers = {}
-            if PANDOC_VERSION < { 2, 10 } then
+            if (PANDOC_VERSION[1] >= 2) and (PANDOC_VERSION[2] < 10) then
                 headers = el.headers
                 return headers
             else
@@ -50,7 +50,7 @@ local table_cell_body_style = "TableCellBody"; -- стиль остальных 
 
         local function get_body_rows(el)
             local rows = {}
-            if PANDOC_VERSION < { 2, 10 } then
+            if (PANDOC_VERSION[1] >= 2) and (PANDOC_VERSION[2] < 10) then
                 rows = el.rows
                 return rows
             else
@@ -97,7 +97,7 @@ local table_cell_body_style = "TableCellBody"; -- стиль остальных 
                 table.insert(body_styles, table_cell_body_style)
             end
 
-            if PANDOC_VERSION < { 2, 10 } then
+            if (PANDOC_VERSION[1] >= 2) and (PANDOC_VERSION[2] < 10) then
                 for i, header in ipairs(headers) do
                     --header = plain2para(header)
                     if #header > 0 then
